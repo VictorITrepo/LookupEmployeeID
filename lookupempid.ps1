@@ -1,7 +1,7 @@
 # Lookup EmployeeID property in AD
-# 09/06/2022   V1.00   Initial Release               Geoff Huber
-# 09/09/2022   V1.01   Fixed syntax to work on PS v5 Geoff Huber
-#
+# 09/06/2022   	V1.00   	Initial Release               	GH
+# 09/09/2022   	V1.01   	Fixed syntax to work on PS v5  	GH
+# 09/09/2022   	V1.02   	Added No ID Found error msg 	GH
 
 Add-Type -assembly System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -43,13 +43,13 @@ $Button.Text = "Check"
 $main_form.Controls.Add($Button)
 
 $Button.Add_Click(
-
-{
-	$UserID=Get-ADUser -identity $textBox1.Text -Property EmployeeID
-	$Label3.Text =   $UserID.EmployeeID
-
-}
-
+	{
+		$UserID=Get-ADUser -identity $textBox1.Text -Property EmployeeID
+		$Label3.Text =   $UserID.EmployeeID
+		if ($UserID.EmployeeID -eq $null){
+			$Label3.Text = "No ID Found"
+		} 
+	}
 )
 
 $main_form.ShowDialog()
